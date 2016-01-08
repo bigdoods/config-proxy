@@ -139,3 +139,21 @@ tape('router will handle the default route', function (t) {
     t.end()
   })
 })
+
+tape('router will return processed routes', function (t) {
+
+  process.env.TEST_URL = 'apples'
+
+  var router = Router({
+    routes:{
+      '/v1/projects':'env:TEST_URL'
+    },
+    default:"/v1/projects"
+  })
+
+  var routes = router.routes()
+
+  t.equal(routes['/v1/projects'], 'apples', 'the route was processed and returned')
+  t.end()
+
+})
