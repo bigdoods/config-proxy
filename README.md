@@ -63,6 +63,16 @@ $ npm test
 
 The value of the routes can be in `env:VARNAME` format.  This means `load the value of this environment variable` as the backend route.
 
+## routes()
+
+This function will return the processed routes back for analysis:
+
+```js
+var routes = router.routes()
+
+console.log(routes['/v1/projects'])
+```
+
 ## Licence
 
 MIT
