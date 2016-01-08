@@ -1,0 +1,25 @@
+{
+  "name": "config-proxy",
+  "version": "1.0.0",
+  "description": "A reverse proxy driven by a JSON config file",
+  "main": "index.js",
+  "scripts": {
+    "test": "node test.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/jenca-cloud/config-proxy.git"
+  },
+  "keywords": [
+    "proxy",
+    "reverse",
+    "config",
+    "router"
+  ],
+  "author": "Jenca Cloud",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/jenca-cloud/config-proxy/issues"
+  },
+  "homepage": "https://github.com/jenca-cloud/config-proxy"
+}
