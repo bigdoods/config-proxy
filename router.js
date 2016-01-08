@@ -34,5 +34,11 @@ module.exports = function(args){
     return backend || routes[args['default']]
   })
 
-  return backends.handler()
+  var router = backends.handler()
+
+  router.routes = function(){
+    return routes
+  }
+
+  return router
 }
