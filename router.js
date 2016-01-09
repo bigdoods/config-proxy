@@ -26,12 +26,26 @@ module.exports = function(args){
 
   var backends = hyperprox(function(req){
     var backend = null
+    var matchingRoute = null
     Object.keys(routes || {}).forEach(function(route){
       if(req.url.indexOf(route)==0){
         backend = routes[route]
+        matchingRoute = route
       }
     })
-    return backend || routes[args['default']]
+
+    backend = backend || routes[args['default']]
+
+    var checkBackend = backend.replace(/^http:\/\//i, '')
+
+    if(checkBackend.indexOf('/')>0){
+      var parts = checkBackend.split('/')
+      backend = parts.shift()
+      var path = '/' + parts.join('/')
+      req.url = req.url.replace(matchingRoute, path)
+    }
+    
+    return backend
   })
 
   var router = backends.handler()

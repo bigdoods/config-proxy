@@ -62,7 +62,6 @@ tape('router routes a stubbed projects handler', function (t) {
   })
 })
 
-
 tape('router allows rewriting of the target path', function (t) {
 
   var testServer, proxyServer
@@ -98,8 +97,7 @@ tape('router allows rewriting of the target path', function (t) {
     function(next){
       hyperquest('http://127.0.0.1:8088/v1/projects/project/apples').pipe(concat(function(data){
         data = data.toString()
-        console.log('-------------------------------------------');
-        console.log(data)
+        t.equal(data, '/v1/project/apples', 'the URL has been remapped')
         next()
       }))
     },
