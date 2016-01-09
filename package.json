@@ -1,6 +1,6 @@
 {
   "name": "config-proxy",
-  "version": "1.1.0",
+  "version": "1.2.0",
   "description": "A reverse proxy driven by a simple configuration",
   "main": "router.js",
   "scripts": {
