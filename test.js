@@ -63,17 +63,14 @@ tape('router routes a stubbed projects handler', function (t) {
 })
 
 
-tape('router allows control of the target URL', function (t) {
+tape('router allows rewriting of the target path', function (t) {
 
   var testServer, proxyServer
 
   var router = Router({
     routes:{
       // /v1/projects/project/apples -> http://127.0.0.1:8089/v1/project/apples
-      '/v1/projects':{
-        host:'http://127.0.0.1:8089',
-        path:'/v1'
-      }
+      '/v1/projects':'http://127.0.0.1:8089/v1'
     },
     'default':'/v1/projects'
   })
