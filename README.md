@@ -73,6 +73,29 @@ var routes = router.routes()
 console.log(routes['/v1/projects'])
 ```
 
+## URL re-writing
+
+Let's say that you proxy `/v1/projects` back to the projects micro-service.
+
+Imaging that this micro-service just hosts '/v1/project/apples' (i.e. without `projects`)
+
+This would mean we want the following URL re-writing to happen:
+
+`/v1/projects/project/apples` -> `/v1/project/apples`
+
+This can be done by appending `/<route>` after the proxy target in the config:
+
+```json
+{
+  routes:{
+    // /v1/projects/project/apples -> http://127.0.0.1:8089/v1/project/apples
+    '/v1/projects':'http://127.0.0.1:8089/v1'
+  },
+  'default':'/v1/projects'
+}
+```
+
+
 ## Licence
 
 MIT
