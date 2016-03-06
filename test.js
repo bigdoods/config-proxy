@@ -198,20 +198,33 @@ tape('router will handle the default route', function (t) {
   })
 })
 
-tape('router will return processed routes', function (t) {
+tape('router will accept a map function to alter routes', function (t) {
 
   process.env.TEST_URL = 'apples'
 
-  var router = Router({
+  var router1 = Router({
+    routes:{
+      '/v1/projects':'env:TEST_URL'
+    },
+    default:"/v1/projects",
+    map:function(route){
+      if(route=='apples') return 'oranges'
+      return route
+    }
+  })
+
+  var router2 = Router({
     routes:{
       '/v1/projects':'env:TEST_URL'
     },
     default:"/v1/projects"
   })
 
-  var routes = router.routes()
+  var routes1 = router1.routes()
+  var routes2 = router2.routes()
 
-  t.equal(routes['/v1/projects'], 'apples', 'the route was processed and returned')
+  t.equal(routes1['/v1/projects'], 'oranges', 'the route was processed and returned')
+  t.equal(routes2['/v1/projects'], 'apples', 'the route was processed and returned')
   t.end()
 
 })
