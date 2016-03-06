@@ -22,6 +22,9 @@ module.exports = function(args){
 
   Object.keys(args.routes || {}).forEach(function(route){
     routes[route] = processRoute(args.routes[route])
+    if(args.map){
+      routes[route] = args.map(routes[route])
+    }
   })
 
   var backends = hyperprox(function(req){
