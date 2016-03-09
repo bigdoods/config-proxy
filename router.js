@@ -3,7 +3,12 @@ var hyperprox = require('hyperprox')
 function processRoute(route){
   if(route.indexOf('env:')==0){
     var parts = route.split(':')
-    return process.env[parts[1]]
+    parts.shift()
+    var field = parts[0]
+    var value = process.env[field]
+    parts.shift()
+    var append = parts.join(':')
+    return value + append
   }
   else{
     return route
