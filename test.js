@@ -228,3 +228,28 @@ tape('router will accept a map function to alter routes', function (t) {
   t.end()
 
 })
+
+
+tape('router will allow additional paths ontop of env vars', function (t) {
+
+  process.env.TEST_URL = 'tcp://1.2.3.4'
+
+  var router = Router({
+    routes:{
+      '/v1/projects':'env:TEST_URL:/v1/projects',
+      '/v1/library':'env:TEST_URL:/v1/apples'
+    },
+    default:"/v1/projects",
+    map:function(route){
+      return route.replace(/^tcp:/, 'http:')
+    }
+  })
+
+  var routes = router.routes()
+  
+
+  t.equal(routes['/v1/projects'], 'http://1.2.3.4/v1/projects', 'the route was processed and returned')
+  t.equal(routes['/v1/library'], 'http://1.2.3.4/v1/apples', 'the route was processed and returned')
+  t.end()
+
+})
