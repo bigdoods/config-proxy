@@ -39,15 +39,8 @@ module.exports = function(args){
 
     backend = backend || routes[args['default']]
 
-    var checkBackend = backend.replace(/^http:\/\//i, '')
+    req.url = req.url.replace(matchingRoute + '/', '/')
 
-    if(checkBackend.indexOf('/')>0){
-      var parts = checkBackend.split('/')
-      backend = parts.shift()
-      var path = '/' + parts.join('/')
-      req.url = req.url.replace(matchingRoute, path)
-    }
-    
     return backend
   })
 
