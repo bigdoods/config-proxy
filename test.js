@@ -327,3 +327,24 @@ tape('router will allow additional paths ontop of env vars', function (t) {
   t.end()
 
 })
+
+
+tape('router exposes the backend hyperproxy', function (t) {
+
+  process.env.TEST_URL = 'tcp://1.2.3.4'
+
+  var router = Router({
+    routes:{
+      '/v1/projects':'env:TEST_URL:/v1/projects',
+      '/v1/library':'env:TEST_URL:/v1/apples'
+    },
+    default:"/v1/projects",
+    map:function(route){
+      return route.replace(/^tcp:/, 'http:')
+    }
+  })
+
+  t.ok(router.backends, 'there are some backends for a router')
+  t.end()
+
+})
