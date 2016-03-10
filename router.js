@@ -61,5 +61,7 @@ module.exports = function(args){
     return routes
   }
 
+  router.backends = backends
+
   return router
 }
