@@ -131,7 +131,7 @@ tape('router copes with an async POST request', function (t) {
 
       setTimeout(function(){
         done(null, route)
-      },3000)
+      },500)
     },
     routes:{
       // /v1/projects/project/apples -> http://127.0.0.1:8089/v1/project/apples
