@@ -32,7 +32,7 @@ module.exports = function(args){
     }
   })
 
-  var backends = hyperprox(function(req){
+  var backends = hyperprox(function(req, done){
     var backend = null
     var matchingRoute = null
     Object.keys(routes || {}).forEach(function(route){
@@ -46,7 +46,13 @@ module.exports = function(args){
 
     req.url = req.url.replace(matchingRoute + '/', '/')
 
-    return backend
+    if(args.handler){
+      args.handler(req, backend, done)
+    }
+    else{
+      done(null, backend)
+    }
+    
   })
 
   var router = backends.handler()

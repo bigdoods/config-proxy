@@ -4,6 +4,7 @@ var Router = require('./router')
 var http = require('http')
 var hyperquest = require('hyperquest')
 var concat = require('concat-stream')
+var from = require('from2-string')
 
 tape('router routes a stubbed projects handler', function (t) {
 
@@ -100,6 +101,79 @@ tape('router allows rewriting of the target path', function (t) {
         t.equal(data, '/v1/project/apples', 'the URL has been remapped')
         next()
       }))
+    },
+
+    function(next){
+      testServer.close(next)
+    },
+
+    function(next){
+      proxyServer.close(next)
+    }
+
+  ], function(err){
+    if(err){
+      t.error(err)
+      t.end()
+      return
+    }
+    t.end()
+  })
+})
+
+
+tape('router copes with an async POST request', function (t) {
+
+  var testServer, proxyServer
+
+  var router = Router({
+    handler:function(req, route, done){
+
+      setTimeout(function(){
+        done(null, route)
+      },3000)
+    },
+    routes:{
+      // /v1/projects/project/apples -> http://127.0.0.1:8089/v1/project/apples
+      '/v1/projects':'http://127.0.0.1:8089/v1'
+    },
+    'default':'/v1/projects'
+  })
+
+  async.series([
+
+    function(next){
+      testServer = http.createServer(function(req, res){
+        req.pipe(concat(function(body){
+          res.end(body.toString())
+        }))
+      })
+
+      testServer.listen(8089, next)
+    },
+
+    function(next){
+      proxyServer = http.createServer(router)
+
+      proxyServer.listen(8088, next)
+    },
+
+    function(next){
+      setTimeout(next, 100)
+    },
+
+    function(next){
+
+
+      var source = from('hello world')
+      var req = hyperquest.post('http://127.0.0.1:8088/v1/projects/project/apples')
+      var sink = concat(function(data){
+        data = data.toString()
+        t.equal(data, 'hello world', 'the data is correct')
+        next()
+      })
+
+      source.pipe(req).pipe(sink)
     },
 
     function(next){

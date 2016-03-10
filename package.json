@@ -28,6 +28,7 @@
   "devDependencies": {
     "async": "^1.5.0",
     "concat-stream": "^1.5.1",
+    "from2-string": "^1.1.0",
     "hyperquest": "^1.2.0",
     "tape": "^4.3.0"
   },
